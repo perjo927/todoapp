@@ -1,31 +1,23 @@
-// import a CSS module
 import classes from "./main.css";
-import { v4 as uuidv4 } from "uuid";
-import { createStore } from "./store";
-import { actions } from "./actions";
-import { undoableReducer } from "./reducer";
+import { createStore } from "./redux/store/index";
+import { actions } from "./redux/actions/index";
+import { rootReducer } from "./redux/reducers/index";
+import { render } from "lit-html";
+import { App } from "./templates/App";
 
-// Creates an object which properties are not writable
-// See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create
-const createTodoItem = (text) => {
-  return { text, done: false, id: uuidv4() };
-};
+const store = createStore({}, rootReducer);
 
-const newTodoItem = createTodoItem("text");
-const { id } = newTodoItem;
-
-const initialState = undoableReducer();
-
-const store = createStore(initialState, undoableReducer);
-
-store.dispatch(actions.addTodo(newTodoItem)); // Possible composition opportunity
-store.dispatch(actions.completeTodo(id));
-store.dispatch(actions.unCompleteTodo(id));
-store.dispatch(actions.undo());
-store.dispatch(actions.redo());
-store.dispatch(actions.deleteTodo(id));
-console.log("state after delete", store.getState());
+// store.subscribe(() => console.log(store.getState()));
+// store.dispatch(actions.toggleTodo(id));
+// store.dispatch(actions.toggleTodo(id));
+// store.dispatch(actions.undo());
+// store.dispatch(actions.redo());
+// store.dispatch(actions.deleteTodo(id));
+// store.dispatch(actions.setVisibilityDone());
+// store.dispatch(actions.setVisibilityInProgress());
+// store.dispatch(actions.setVisibilityAll());
 
 export default () => {
-  //   console.log(classes.main);
+  store.subscribe(() => render(App({ store, actions }), document.body));
+  render(App({ store, actions }), document.body);
 };
