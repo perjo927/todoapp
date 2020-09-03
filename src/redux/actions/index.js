@@ -11,7 +11,7 @@ export const CONSTS = {
     ALL: "ALL",
     DONE: "DONE",
     IN_PROGRESS: "IN_PROGRESS",
-  }
+  },
 };
 
 export const actions = {
@@ -45,16 +45,8 @@ export const actions = {
       value: null,
     };
   },
-  setVisibilityAll: () => ({
+  setVisibility: (filter) => ({
     type: CONSTS.actions.SET_VISIBILITY,
-    value: CONSTS.visibilityFilters.ALL,
-  }),
-  setVisibilityDone: () => ({
-    type: CONSTS.actions.SET_VISIBILITY,
-    value: CONSTS.visibilityFilters.DONE,
-  }),
-  setVisibilityInProgress: () => ({
-    type: CONSTS.actions.SET_VISIBILITY,
-    value: CONSTS.visibilityFilters.IN_PROGRESS,
+    value: filter,
   }),
 };

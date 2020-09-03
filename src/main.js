@@ -13,9 +13,7 @@ const store = createStore({}, rootReducer);
 // store.dispatch(actions.undo());
 // store.dispatch(actions.redo());
 // store.dispatch(actions.deleteTodo(id));
-// store.dispatch(actions.setVisibilityDone());
-// store.dispatch(actions.setVisibilityInProgress());
-// store.dispatch(actions.setVisibilityAll());
+// store.dispatch(actions.setVisibility()); // TODO: name filter
 
 export default () => {
   store.subscribe(() => render(App({ store, actions }), document.body));

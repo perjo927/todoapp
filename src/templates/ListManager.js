@@ -1,26 +1,27 @@
 import { html } from "lit-html";
+import { CONSTS } from "../redux/actions/index";
 
-const filterAll = { filter: "ALL", text: "All" };
+const { ALL, DONE, IN_PROGRESS } = CONSTS.visibilityFilters;
+
+const filterAll = { filter: ALL, text: "All" };
 const filterInProgress = {
-  filter: "IN_PROGRESS",
+  filter: IN_PROGRESS,
   text: "In Progress",
 };
-const filterDone = { filter: "DONE", text: "Done" };
-
-export const VisibleFilter = ({ onClick }) => {
-  return html` ${Filter()} `;
-};
+const filterDone = { filter: DONE, text: "Done" };
 
 const Filter = ({ filter, selected, text, onClick }) => {
-  const className = filter === selected? "selected" : "";
+  const className = filter === selected ? "selected" : "";
   return html`
-    <button
-      @click=${onClick}
+    <a
+      @click=${() => {
+        filter !== selected && onClick(filter);
+      }}
       disabled=${filter === selected}
       class=${className}
     >
       ${text}
-    </button>
+    </a>
   `;
 };
 
