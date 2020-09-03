@@ -2,18 +2,26 @@ import { html } from "lit-html";
 
 /*
     style={{
-      textDecoration: completed ? 'line-through' : 'none'
     }}
 */
-const Todo = ({ onClick, text, done }) => html`
-  <li @click=${onClick}>${text}</li>
-`;
+const Todo = ({ onToggleClick, onDeleteClick, text, done }) => {
+  const textClass = "todo text" + (done ? " done" : "");
+  const check = done ? "✔" : "";
+  return html`
+    <li>
+      <div class="todo toggle" @click=${onToggleClick}>${check}</div>
+      <div class=${textClass}>${text}</div>
+      <div class="todo delete" @click=${onDeleteClick}>X</div>
+    </li>
+  `;
+};
 
-export const TodoList = ({ todos, toggleTodo }) => html`
+export const TodoList = ({ todos, toggleTodo, deleteTodo }) => html`
   <ul>
     ${todos.map((todo) =>
       Todo({
-        onClick: () => toggleTodo(todo.id),
+        onToggleClick: () => toggleTodo(todo.id),
+        onDeleteClick: () => deleteTodo(todo.id),
         text: todo.text,
         done: todo.done,
       })

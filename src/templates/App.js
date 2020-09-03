@@ -5,28 +5,32 @@ import { ListManager } from "./ListManager";
 import { getTodoItem } from "../factories/todo/index";
 
 export const App = ({ store, actions }) => {
-  const onSubmit = (e) => {
-    const [input] = e.target;
-    const { value } = input;
-    input.value = "";
-    const newTodoItem = getTodoItem(value);
-    store.dispatch(actions.addTodo(newTodoItem));
-  };
-
   const getTodos = () => {
     const { todos } = store.getState();
     return todos?.present || [];
   };
 
+  const addTodo = (todo) => store.dispatch(actions.addTodo(todo));
   const toggleTodo = (id) => store.dispatch(actions.toggleTodo(id));
+  const deleteTodo = (id) => store.dispatch(actions.deleteTodo(id));
+  
+  const onSubmit = (e) => {
+    const [input] = e.target;
+    const { value } = input;
+    input.value = "";
+    const newTodoItem = getTodoItem(value);
+    addTodo(newTodoItem);
+  };
 
   const todos = getTodos();
 
-  return html` <h1>Todo App</h1>
-    <div>
+  return html` <header>
+      <h1>Todo</h1>
+    </header>
+    <main>
       ${Input({
         onSubmit,
       })}
-      ${TodoList({ todos, toggleTodo })} ${ListManager()}
-    </div>`;
+      ${TodoList({ todos, toggleTodo, deleteTodo })} ${ListManager()}
+    </main>`;
 };

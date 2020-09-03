@@ -12,7 +12,6 @@ export const toggleTodo = (state, id) =>
   state.map((todo) => (todo.id === id ? { ...todo, done: !todo.done } : todo));
 
 export const areTodosEqual = (presentTodoList, newTodoList) => {
-  // If length is different a new todo has been added, nothing to do
   if (presentTodoList.length !== newTodoList.length) {
     return false;
   }

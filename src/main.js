@@ -1,4 +1,4 @@
-import classes from "./main.css";
+import css from "./main.css";
 import { createStore } from "./redux/store/index";
 import { actions } from "./redux/actions/index";
 import { rootReducer } from "./redux/reducers/index";
