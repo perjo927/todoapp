@@ -1,28 +1,36 @@
 import { html } from "lit-html";
 
-const onClick = () => {
-  console.log("filter click");
-};
-
-const filterAll = { filter: "ALL", text: "All", onClick };
+const filterAll = { filter: "ALL", text: "All" };
 const filterInProgress = {
   filter: "IN_PROGRESS",
   text: "In Progress",
-  onClick,
 };
-const filterDone = { filter: "DONE", text: "Done", onClick };
+const filterDone = { filter: "DONE", text: "Done" };
 
 export const VisibleFilter = ({ onClick }) => {
   return html` ${Filter()} `;
 };
 
-const Filter = ({ filter, selected, text, onClick }) => html`
-  <button @click=${onClick} disabled=${selected}>${text}</button>
-`;
+const Filter = ({ filter, selected, text, onClick }) => {
+  const className = filter === selected? "selected" : "";
+  return html`
+    <button
+      @click=${onClick}
+      disabled=${filter === selected}
+      class=${className}
+    >
+      ${text}
+    </button>
+  `;
+};
 
-export const ListManager = () => html`
-  <div>
-    <span>Show: </span>
-    ${Filter(filterAll)} ${Filter(filterInProgress)} ${Filter(filterDone)}
+export const ListManager = ({
+  visibility: selected,
+  onChangeVisibility: onClick,
+}) => html`
+  <div class="list-manager">
+    ${Filter({ ...filterAll, selected, onClick })}
+    ${Filter({ ...filterInProgress, selected, onClick })}
+    ${Filter({ ...filterDone, selected, onClick })}
   </div>
 `;

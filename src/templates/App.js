@@ -10,10 +10,19 @@ export const App = ({ store, actions }) => {
     return todos?.present || [];
   };
 
+  const getVisibility = () => {
+    const { visibility } = store.getState();
+    return visibility;
+  };
+
+  const onChangeVisibility = (e) => {
+    console.log("clicked", e);
+  };
+
   const addTodo = (todo) => store.dispatch(actions.addTodo(todo));
   const toggleTodo = (id) => store.dispatch(actions.toggleTodo(id));
   const deleteTodo = (id) => store.dispatch(actions.deleteTodo(id));
-  
+
   const onSubmit = (e) => {
     const [input] = e.target;
     const { value } = input;
@@ -23,6 +32,11 @@ export const App = ({ store, actions }) => {
   };
 
   const todos = getTodos();
+  const hasTodos = todos.length > 0;
+
+  const visibility = getVisibility();
+
+  const maybeRender = (Template) => (hasTodos ? Template : null);
 
   return html` <header>
       <h1>Todo</h1>
@@ -31,6 +45,7 @@ export const App = ({ store, actions }) => {
       ${Input({
         onSubmit,
       })}
-      ${TodoList({ todos, toggleTodo, deleteTodo })} ${ListManager()}
+      ${maybeRender(TodoList({ todos, toggleTodo, deleteTodo }))}
+      ${maybeRender(ListManager({ visibility, onChangeVisibility }))}
     </main>`;
 };

@@ -1,9 +1,5 @@
 import { html } from "lit-html";
 
-/*
-    style={{
-    }}
-*/
 const Todo = ({ onToggleClick, onDeleteClick, text, done }) => {
   const textClass = "todo text" + (done ? " done" : "");
   const check = done ? "✔" : "";
