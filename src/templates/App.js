@@ -18,6 +18,7 @@ import {
 } from "../business-logic/index";
 import { getAndResetInput, maybeRender } from "../view-logic/index";
 
+// TODO: Pass context object?
 export const App = ({ store, actions }) => {
   const {
     addTodo,
@@ -43,6 +44,9 @@ export const App = ({ store, actions }) => {
   const onUndo = () => undo();
   const onRedo = () => redo();
 
+  const { rewind } = store;
+  const { fastForward } = store;
+
   /* Template dependencies */
   const visibility = getVisibility(store);
   const allTodos = getTodos(store);
@@ -55,8 +59,11 @@ export const App = ({ store, actions }) => {
   return html`
     <nav>
       <div class="time">
-        ${Rewind({ disabled: true, onClick: () => console.log("click") })}
-        ${FastForward({ disabled: true, onClick: () => console.log("click") })}
+        ${Rewind({ disabled: !rewind.canExecute(), onClick: rewind.execute })}
+        ${FastForward({
+          disabled: !fastForward.canExecute(),
+          onClick: fastForward.execute,
+        })}
       </div>
       <div class="regrets">
         ${Undo({ disabled: !canUndo, onClick: onUndo })}

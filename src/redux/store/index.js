@@ -1,25 +1,30 @@
 import { makeSubscriber } from "./subscribe";
-import { makeStateGetter, makeStateSetter } from "./state";
+import { makeStateHandlers, makeStateTimeTraveller } from "./state";
 import { makeDispatcher } from "./dispatch";
 
 export const createStore = (initialState = {}, reducer) => {
   const stateContainer = [initialState];
   const subscribers = [];
   const stateHandlers = {
-    ...makeStateSetter(stateContainer),
-    ...makeStateGetter(stateContainer),
+    ...makeStateHandlers(stateContainer),
   };
 
-  const onDispatch = () => {
+  const onStateChange = () => {
     subscribers.forEach((subscription) => subscription());
   };
 
-  const { dispatch } = makeDispatcher(stateHandlers, reducer, onDispatch);
+  const { dispatch } = makeDispatcher(stateHandlers, reducer, onStateChange);
   const { subscribe } = makeSubscriber(subscribers);
+  const { rewind, fastForward } = makeStateTimeTraveller(
+    stateContainer,
+    onStateChange
+  );
 
   return {
     getState: stateHandlers.getState,
     dispatch,
     subscribe,
+    rewind,
+    fastForward,
   };
 };

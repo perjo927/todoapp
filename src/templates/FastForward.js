@@ -1,7 +1,7 @@
 import { html } from "lit-html";
 
 export const FastForward = ({ disabled, onClick }) => {
-  const className = `${disabled ? "disabled" : ""}`;
+  const className = `fastforward${disabled ? " disabled" : ""}`;
   const onFastForward = disabled ? () => {} : onClick;
 
   return html`
@@ -14,7 +14,7 @@ export const FastForward = ({ disabled, onClick }) => {
         height="36px"
       >
         <path d="M0 0h24v24H0z" fill="none" />
-        <path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z" />
+        <path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z" />
       </svg>
     </div>
   `;

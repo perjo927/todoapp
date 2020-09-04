@@ -16,6 +16,8 @@ const store = createStore({}, rootReducer);
 // store.dispatch(actions.setVisibility("ALL")); // TODO: name filter
 
 export default () => {
-  store.subscribe(() => render(App({ store, actions }), document.body));
+  // Initial render
   render(App({ store, actions }), document.body);
+  // Subsequent renders
+  store.subscribe(() => render(App({ store, actions }), document.body));
 };
