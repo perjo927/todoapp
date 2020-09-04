@@ -4,20 +4,20 @@ import { CONSTS } from "../redux/actions/index";
 const { ALL, DONE, IN_PROGRESS } = CONSTS.visibilityFilters;
 
 const filterAll = { filter: ALL, text: "All" };
+const filterDone = { filter: DONE, text: "Done" };
 const filterInProgress = {
   filter: IN_PROGRESS,
   text: "In Progress",
 };
-const filterDone = { filter: DONE, text: "Done" };
 
-const Filter = ({ filter, selected, text, onClick }) => {
-  const className = filter === selected ? "selected" : "";
+const Filter = ({ filter, text, selected, onClick }) => {
+  const isFilterSelected = filter === selected;
+  const className = isFilterSelected ? "selected" : "";
+
   return html`
     <a
-      @click=${() => {
-        filter !== selected && onClick(filter);
-      }}
-      disabled=${filter === selected}
+      @click=${() => !isFilterSelected && onClick(filter)}
+      disabled=${isFilterSelected}
       class=${className}
     >
       ${text}
@@ -25,13 +25,10 @@ const Filter = ({ filter, selected, text, onClick }) => {
   `;
 };
 
-export const ListManager = ({
-  visibility: selected,
-  onChangeVisibility: onClick,
-}) => html`
+export const ListManager = (args) => html`
   <div class="list-manager">
-    ${Filter({ ...filterAll, selected, onClick })}
-    ${Filter({ ...filterInProgress, selected, onClick })}
-    ${Filter({ ...filterDone, selected, onClick })}
+    ${Filter({ ...filterAll, ...args })}
+    ${Filter({ ...filterInProgress, ...args })}
+    ${Filter({ ...filterDone, ...args })}
   </div>
 `;

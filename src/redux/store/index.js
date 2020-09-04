@@ -10,7 +10,6 @@ export const createStore = (initialState = {}, reducer) => {
   const getState = createGetState(stateContainer);
 
   const setState = (newState) => {
-    // subs
     return stateContainer.push(newState);
   };
 
