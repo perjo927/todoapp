@@ -2,6 +2,10 @@ import { html } from "lit-html";
 import { Input } from "./Input";
 import { TodoList } from "./TodoList";
 import { ListManager } from "./ListManager";
+import { Undo } from "./Undo";
+import { Redo } from "./Redo";
+import { Rewind } from "./Rewind";
+import { FastForward } from "./FastForward";
 import { getTodoItem } from "../factories/todo/index";
 import {
   getStoreMethods,
@@ -9,14 +13,20 @@ import {
   getVisibility,
   filterTodos,
   hasTodos,
+  hasPastTodos,
+  hasFutureTodos,
 } from "../business-logic/index";
 import { getAndResetInput, maybeRender } from "../view-logic/index";
 
 export const App = ({ store, actions }) => {
-  const { addTodo, toggleTodo, deleteTodo, changeVisibility } = getStoreMethods(
-    store,
-    actions
-  );
+  const {
+    addTodo,
+    toggleTodo,
+    deleteTodo,
+    changeVisibility,
+    undo,
+    redo,
+  } = getStoreMethods(store, actions);
 
   /* Event Handlers */
   const onChangeVisibility = (filter) => changeVisibility(filter);
@@ -24,18 +34,36 @@ export const App = ({ store, actions }) => {
   const onSubmit = (e) => {
     // TODO: Compose
     const value = getAndResetInput(e);
-    const newTodoItem = getTodoItem(value);
-    addTodo(newTodoItem);
+    if (value !== "") {
+      const newTodoItem = getTodoItem(value);
+      addTodo(newTodoItem);
+    }
   };
 
-  /* Template logic */
+  const onUndo = () => undo();
+  const onRedo = () => redo();
+
+  /* Template dependencies */
   const visibility = getVisibility(store);
   const allTodos = getTodos(store);
   const hasAnyTodos = hasTodos(allTodos);
   const filteredTodos = filterTodos(visibility, allTodos);
   const hasVisibleTodos = hasTodos(filteredTodos);
+  const canUndo = hasPastTodos(store);
+  const canRedo = hasFutureTodos(store);
 
   return html`
+    <nav>
+      <div class="time">
+        ${Rewind({ disabled: true, onClick: () => console.log("click") })}
+        ${FastForward({ disabled: true, onClick: () => console.log("click") })}
+      </div>
+      <div class="regrets">
+        ${Undo({ disabled: !canUndo, onClick: onUndo })}
+        ${Redo({ disabled: !canRedo, onClick: onRedo })}
+      </div>
+    </nav>
+
     <header>
       <h1>Todo</h1>
     </header>

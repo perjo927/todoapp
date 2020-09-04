@@ -3,7 +3,7 @@ import { html } from "lit-html";
 const Todo = ({ onToggleClick, onDeleteClick, text, done }) => {
   const toggleClass = "todo toggle";
   const deleteClass = "todo delete";
-  const textClass = "todo text" + (done ? " done" : "");
+  const textClass = `todo text ${done ? " done" : ""}`;
   const checkMark = done ? "✔" : "";
 
   return html`
