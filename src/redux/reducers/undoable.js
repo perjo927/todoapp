@@ -4,8 +4,10 @@ const {
   actions: { UNDO, REDO },
 } = CONSTS;
 
-// https://redux.js.org/recipes/implementing-undo-history
 /*
+    Read more at:
+    https://redux.js.org/recipes/implementing-undo-history
+
     # Handling Undo
     1. Remove the last element from the past.
     2. Set the present to the element we removed in the previous step.

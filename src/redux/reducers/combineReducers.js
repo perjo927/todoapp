@@ -1,3 +1,7 @@
+/*
+  Read more at:
+  https://redux.js.org/api/combinereducers
+*/
 export const combineReducers = (reducers) => (
   state = {},
   action = { value: null, type: null }

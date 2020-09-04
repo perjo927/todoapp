@@ -1,5 +1,5 @@
 import { makeSubscriber } from "./subscribe";
-import { makeStateHandlers, makeStateTimeTraveller } from "./state";
+import { makeStateHandlers } from "./state";
 import { makeDispatcher } from "./dispatch";
 
 export const createStore = (initialState = {}, reducer) => {
@@ -15,16 +15,10 @@ export const createStore = (initialState = {}, reducer) => {
 
   const { dispatch } = makeDispatcher(stateHandlers, reducer, onStateChange);
   const { subscribe } = makeSubscriber(subscribers);
-  const { rewind, fastForward } = makeStateTimeTraveller(
-    stateContainer,
-    onStateChange
-  );
 
   return {
     getState: stateHandlers.getState,
     dispatch,
     subscribe,
-    rewind,
-    fastForward,
   };
 };

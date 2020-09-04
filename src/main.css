@@ -25,11 +25,6 @@ nav {
   justify-content: space-between;
 }
 
-.regrets,
-.time {
-  display: flex;
-}
-
 .disabled svg {
   fill: gray;
 }

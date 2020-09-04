@@ -18,6 +18,7 @@ const store = createStore({}, rootReducer);
 export default () => {
   // Initial render
   render(App({ store, actions }), document.body);
+  
   // Subsequent renders
   store.subscribe(() => render(App({ store, actions }), document.body));
 };

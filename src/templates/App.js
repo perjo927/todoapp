@@ -4,8 +4,6 @@ import { TodoList } from "./TodoList";
 import { ListManager } from "./ListManager";
 import { Undo } from "./Undo";
 import { Redo } from "./Redo";
-import { Rewind } from "./Rewind";
-import { FastForward } from "./FastForward";
 import { getTodoItem } from "../factories/todo/index";
 import {
   getStoreMethods,
@@ -44,9 +42,6 @@ export const App = ({ store, actions }) => {
   const onUndo = () => undo();
   const onRedo = () => redo();
 
-  const { rewind } = store;
-  const { fastForward } = store;
-
   /* Template dependencies */
   const visibility = getVisibility(store);
   const allTodos = getTodos(store);
@@ -58,17 +53,8 @@ export const App = ({ store, actions }) => {
 
   return html`
     <nav>
-      <div class="time">
-        ${Rewind({ disabled: !rewind.canExecute(), onClick: rewind.execute })}
-        ${FastForward({
-          disabled: !fastForward.canExecute(),
-          onClick: fastForward.execute,
-        })}
-      </div>
-      <div class="regrets">
-        ${Undo({ disabled: !canUndo, onClick: onUndo })}
-        ${Redo({ disabled: !canRedo, onClick: onRedo })}
-      </div>
+      ${Undo({ disabled: !canUndo, onClick: onUndo })}
+      ${Redo({ disabled: !canRedo, onClick: onRedo })}
     </nav>
 
     <header>
