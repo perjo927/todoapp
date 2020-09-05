@@ -1,5 +1,7 @@
 import { makeStateHandlers } from "../src/redux/store/state.js";
 import { makeDispatcher } from "../src/redux/store/dispatch.js";
+import { makeSubscriber } from "../src/redux/store/subscribe.js";
+
 import assert from "assert";
 
 describe("store", () => {
@@ -40,80 +42,121 @@ describe("store", () => {
     });
 
     describe("dispatch.js", () => {
-      it("generates a function from state handlers, a reducer and a callback", () => {
-        const stateHandlers = {
-          getState() {},
-          setState(arg) {},
-        };
-        const onDispatch = () => {};
-        const reducer = () => {};
+      describe("makeDispatcher", () => {
+        it("generates a function from state handlers, a reducer and a callback", () => {
+          const stateHandlers = {
+            getState() {},
+            setState(arg) {},
+          };
+          const onDispatch = () => {};
+          const reducer = () => {};
 
-        const dispatcher = makeDispatcher(stateHandlers, reducer, onDispatch);
+          const dispatcher = makeDispatcher(stateHandlers, reducer, onDispatch);
 
-        assert.equal(dispatcher.hasOwnProperty("dispatch"), true);
+          assert.equal(dispatcher.hasOwnProperty("dispatch"), true);
+        });
+
+        it("returns the action provided", () => {
+          const stateHandlers = {
+            getState() {},
+            setState(arg) {},
+          };
+          const onDispatch = () => {};
+          const reducer = () => {};
+          const action = { type: "FOO", value: "FOO" };
+
+          const { dispatch } = makeDispatcher(
+            stateHandlers,
+            reducer,
+            onDispatch
+          );
+
+          const expected = action;
+          const actual = dispatch(action);
+
+          assert.equal(actual, expected);
+        });
+
+        it("calls setState with the newState", () => {
+          const spyOnSetState = { arg: "" };
+
+          const stateHandlers = {
+            getState() {
+              return { state: "BAR" };
+            },
+            setState(arg) {
+              spyOnSetState.arg = arg;
+            },
+          };
+          const onDispatch = () => {};
+          const reducer = (state, action) => action.type + state.state;
+          const action = { type: "FOO", value: "FOO" };
+
+          const { dispatch } = makeDispatcher(
+            stateHandlers,
+            reducer,
+            onDispatch
+          );
+          dispatch(action);
+
+          const expected = "FOOBAR";
+          const actual = spyOnSetState.arg;
+
+          assert.equal(actual, expected);
+        });
+
+        it("calls onDispatch", () => {
+          const spyOnDispatch = { called: false };
+
+          const stateHandlers = {
+            getState() {},
+            setState(arg) {},
+          };
+          const onDispatch = () => {
+            spyOnDispatch.called = true;
+          };
+          const reducer = () => {};
+          const action = {};
+
+          const { dispatch } = makeDispatcher(
+            stateHandlers,
+            reducer,
+            onDispatch
+          );
+          dispatch(action);
+
+          const expected = true;
+          const actual = spyOnDispatch.called;
+
+          assert.equal(actual, expected);
+        });
       });
+    });
 
-      it("returns the action provided", () => {
-        const stateHandlers = {
-          getState() {},
-          setState(arg) {},
-        };
-        const onDispatch = () => {};
-        const reducer = () => {};
-        const action = { type: "FOO", value: "FOO" };
+    describe("subscribe.js", () => {
+      describe("makeSubscriber", () => {
+        it("generates a function from subscribers", () => {
+          const subscribers = [];
 
-        const { dispatch } = makeDispatcher(stateHandlers, reducer, onDispatch);
+          const subscriber = makeSubscriber(subscribers);
 
-        const expected = action;
-        const actual = dispatch(action);
+          assert.equal(subscriber.hasOwnProperty("subscribe"), true);
+        });
 
-        assert.equal(actual, expected);
-      });
+        it("calls the subscriber", () => {
+          const subscribers = [];
+          const spyOnSubscribe = { called: false };
 
-      it("calls setState with the newState", () => {
-        const spyOnSetState = { arg: "" };
+          const { subscribe } = makeSubscriber(subscribers);
 
-        const stateHandlers = {
-          getState() {
-            return { state: "BAR" };
-          },
-          setState(arg) {
-            spyOnSetState.arg = arg;
-          },
-        };
-        const onDispatch = () => {};
-        const reducer = (state, action) => action.type + state.state;
-        const action = { type: "FOO", value: "FOO" };
+          subscribe(() => (spyOnSubscribe.called = true));
+          subscribers.forEach((subscription) => subscription());
 
-        const { dispatch } = makeDispatcher(stateHandlers, reducer, onDispatch);
-        dispatch(action);
+          const expected = true;
+          const actual = spyOnSubscribe.called;
 
-        const expected = "FOOBAR";
-        const actual = spyOnSetState.arg;
-
-        assert.equal(actual, expected);
-      });
-
-      it("calls onDispatch", () => {
-        const spyOnDispatch = { called: false };
-
-        const stateHandlers = {
-          getState() {},
-          setState(arg) {},
-        };
-        const onDispatch = () => {
-          spyOnDispatch.called = true;
-        };
-        const reducer = () => {};
-        const action = {};
-
-        const { dispatch } = makeDispatcher(stateHandlers, reducer, onDispatch);
-        dispatch(action);
-
-        const expected = true;
-        const actual = spyOnDispatch.called;
-
-        assert.equal(actual, expected);
+          assert.equal(actual, expected);
+        });
       });
     });
   });
