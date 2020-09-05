@@ -10,6 +10,10 @@
 
 > npm run start
 
+### Test
+
+> npm test
+
 ## Author
 
 Per Jonsson

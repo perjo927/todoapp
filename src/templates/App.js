@@ -60,6 +60,7 @@ export const App = ({ store, actions }) => {
     <header>
       <h1>Todo</h1>
     </header>
+    
     <main>
       ${Input({ onSubmit })}
       ${maybeRender(
