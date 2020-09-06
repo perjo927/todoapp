@@ -5,5 +5,5 @@ export const getAndResetInput = (e) => {
   return value;
 };
 
-export const maybeRender = (Template, validator) =>
-  validator ? Template : null;
+export const maybeRender = (template, validator) =>
+  validator ? template : null;
