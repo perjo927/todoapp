@@ -1,4 +1,4 @@
-import { CONSTS } from "../redux/actions/index";
+import { CONSTS } from "../redux/actions/index.js";
 
 const { ALL, DONE, IN_PROGRESS } = CONSTS.visibilityFilters;
 
@@ -56,6 +56,8 @@ export const hasFutureTodos = (store) => {
   return todos.future.length > 0;
 };
 
+export const hasTodos = (todos) => todos.length > 0;
+
 export const getVisibility = (store) => {
   const { visibility } = store.getState();
   return visibility;
@@ -75,5 +77,3 @@ export const filterTodos = (visibility, todos) => {
   const filterFunction = filterFunctionMap.get(visibility) || filterAll;
   return todos.filter(filterFunction);
 };
-
-export const hasTodos = (todos) => todos.length > 0;

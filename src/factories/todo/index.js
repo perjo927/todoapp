@@ -1,4 +1,4 @@
-import { generateId } from "../../utils/id/index";
+import { generateId } from "../id/index.js";
 
 export const createTodoBase = (text) => ({ text, done: false });
 
