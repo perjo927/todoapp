@@ -1,4 +1,4 @@
-import { CONSTS } from "../actions";
+import { CONSTS } from "../actions/index.js";
 
 const {
   actions: { UNDO, REDO },
@@ -48,7 +48,7 @@ export const redo = ({ past, present, future }) => {
 
 export const defaultReduce = (state, reducer, action, areEqual) => {
   const { past, present } = state;
-  const newPresent = reducer(present, action) || [];
+  const newPresent = reducer(present, action) || undefined;
 
   return areEqual(present, newPresent)
     ? state

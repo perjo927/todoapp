@@ -1,4 +1,4 @@
-import { CONSTS } from "../actions";
+import { CONSTS } from "../actions/index.js";
 
 const {
   actions: { ADD, DELETE, TOGGLE },
@@ -15,7 +15,7 @@ export const areTodosEqual = (presentTodoList, newTodoList) => {
   if (presentTodoList.length !== newTodoList.length) {
     return false;
   }
-  // If length is same, one item could have flipped
+  // If new state length vs old state length are same, one item could have flipped
   // Find a matching todo and see if one todo has been altered
   return presentTodoList.every((presentTodo) => {
     const newTodo = newTodoList.find(

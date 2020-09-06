@@ -137,7 +137,6 @@ describe("store", () => {
       describe("makeSubscriber", () => {
         it("generates a function from subscribers", () => {
           const subscribers = [];
-
           const subscriber = makeSubscriber(subscribers);
 
           assert.equal(subscriber.hasOwnProperty("subscribe"), true);
