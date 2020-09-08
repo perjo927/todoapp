@@ -2,7 +2,7 @@ import { makeSubscriber } from "./subscribe";
 import { makeStateHandlers } from "./state";
 import { makeDispatcher } from "./dispatch";
 
-export const createStore = (initialState = {}, reducer) => {
+export const createStore = (reducer, initialState = {}) => {
   const stateContainer = [initialState];
   const subscribers = [];
   const stateHandlers = {

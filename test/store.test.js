@@ -35,8 +35,8 @@ describe("store", () => {
         const expectedLength = 2;
         const actualLength = stateHandlers.setState(newState);
         const actualContainer = stateContainer;
-        assert.equal(actualLength, expectedLength);
 
+        assert.equal(actualLength, expectedLength);
         assert.deepEqual(actualContainer, expectedContainer);
       });
     });
