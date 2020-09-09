@@ -15,36 +15,26 @@ export const CONSTS = {
 };
 
 export const actions = {
-  addTodo: (todo) => {
-    return {
-      type: CONSTS.actions.ADD,
-      value: todo,
-    };
-  },
-  deleteTodo: (id) => {
-    return {
-      type: CONSTS.actions.DELETE,
-      value: id,
-    };
-  },
-  toggleTodo: (id) => {
-    return {
-      type: CONSTS.actions.TOGGLE,
-      value: id,
-    };
-  },
-  undo: () => {
-    return {
-      type: CONSTS.actions.UNDO,
-      value: null,
-    };
-  },
-  redo: () => {
-    return {
-      type: CONSTS.actions.REDO,
-      value: null,
-    };
-  },
+  addTodo: (todo) => ({
+    type: CONSTS.actions.ADD,
+    value: todo,
+  }),
+  deleteTodo: (id) => ({
+    type: CONSTS.actions.DELETE,
+    value: id,
+  }),
+  toggleTodo: (id) => ({
+    type: CONSTS.actions.TOGGLE,
+    value: id,
+  }),
+  undo: () => ({
+    type: CONSTS.actions.UNDO,
+    value: null,
+  }),
+  redo: () => ({
+    type: CONSTS.actions.REDO,
+    value: null,
+  }),
   setVisibility: (filter) => ({
     type: CONSTS.actions.SET_VISIBILITY,
     value: filter,
